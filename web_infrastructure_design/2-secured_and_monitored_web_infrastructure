@@ -1,0 +1,70 @@
+
+
+
+Secured and Monitored Web Infrastructure Design
+Overview
+This document details a three-server web infrastructure for www.foobar.com with enhanced security features and comprehensive monitoring.
+Security Components
+
+1. Firewalls
+
+Purpose:
+
+Control incoming/outgoing traffic
+Prevent unauthorized access
+Filter malicious traffic
+Establish security zones
+
+
+Placement:
+
+Firewall 1: External traffic protection
+Firewall 2: Load balancer protection
+Firewall 3: Application server protection
+Firewall 4: Database protection
+
+
+
+2. SSL/HTTPS Implementation
+
+Purpose:
+
+Encrypt data in transit
+Prevent man-in-the-middle attacks
+Ensure data integrity
+Build user trust
+
+
+Configuration:
+
+SSL certificate for www.foobar.com
+TLS 1.3 protocol
+Regular certificate renewal
+Strong cipher suites
+
+
+
+Monitoring System
+1. Monitoring Clients
+
+Purpose:
+
+Collect performance metrics
+Track resource utilization
+Monitor system health
+Alert on issues
+
+
+Data Collection Methods:
+
+System metrics (CPU, memory, disk)
+Application logs
+Network statistics
+Custom metrics
+
+
+
+2. QPS Monitoring
+
+Implementation:
+nginx

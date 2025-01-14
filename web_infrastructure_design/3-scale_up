@@ -1,0 +1,97 @@
+### **Infrastructure Design**
+
+The goal is to create a robust and scalable infrastructure where components (web server, application server, and database) are split across their own servers, with an additional load balancer for high availability. Below is a breakdown of the required components and the reasoning behind each addition.
+
+---
+
+### **1. Web Server**
+**Purpose**:  
+The web server handles HTTP requests from clients (browsers, APIs) and serves static content like HTML, CSS, JavaScript, and images. It forwards dynamic requests to the application server.
+
+**Technology Choice**:  
+You could use popular web servers like **Nginx** or **Apache HTTP Server**. Nginx is preferred for high performance and handling concurrent connections efficiently.
+
+**Reason for Addition**:  
+- Separation of concerns: Keeps static content delivery and request handling optimized, reducing the workload on the application server.
+- Security: Acts as a first layer of defense, with configurations for SSL/TLS termination, request filtering, etc.
+
+---
+
+### **2. Application Server**
+**Purpose**:  
+Processes business logic, handles API calls, and interacts with the database. This is where frameworks (e.g., Django, Spring Boot, Express.js) run.
+
+**Technology Choice**:  
+An application server like **Gunicorn** for Python or **Tomcat** for Java could be used. 
+
+**Reason for Addition**:  
+- Scalability: Application servers are optimized for running backend logic, enabling scaling without affecting the web server’s performance.
+- Decoupling: Keeps backend logic separate from the web server, making maintenance easier.
+
+---
+
+### **3. Database Server**
+**Purpose**:  
+Stores persistent data for the application. Queries are handled here for retrieving and storing information.
+
+**Technology Choice**:  
+Use a relational database like **PostgreSQL** or **MySQL**, or a NoSQL database like **MongoDB** if the application requires schema flexibility.
+
+**Reason for Addition**:  
+- Data Integrity: Centralized data management ensures consistency.
+- Performance: Separating the database from the application server ensures queries don't slow down the backend logic.
+
+---
+
+### **4. Load Balancer**
+**Purpose**:  
+Distributes incoming traffic across multiple servers to ensure availability and reliability.
+
+**Technology Choice**:  
+**HAProxy** is a popular choice for a load balancer due to its performance and extensive configuration options.
+
+**Configuration**:  
+- Set up in **cluster mode** for failover.
+- Distributes traffic between web servers or application servers (depending on architecture).
+
+**Reason for Addition**:  
+- **High Availability**: Ensures the application remains accessible even if one server fails.
+- **Scalability**: Allows the system to handle more traffic by distributing the load across multiple servers.
+
+---
+
+### **Infrastructure Diagram**
+A simplified diagram of the architecture:
+
+```
+           +--------------------+
+           |    Clients         |
+           +--------------------+
+                     |
+                     v
+           +--------------------+
+           |    Load Balancer   |
+           +--------------------+
+                 /       \
+          +--------+   +--------+
+          | Web Svr|   | Web Svr|
+          +--------+   +--------+
+                |            |
+                v            v
+           +--------------------+
+           | Application Servers|
+           +--------------------+
+                     |
+                     v
+           +--------------------+
+           | Database Server    |
+           +--------------------+
+```
+
+---
+
+### **Why This Architecture?**
+1. **Modularity**: Each component is isolated, making it easier to debug, maintain, and scale.
+2. **Scalability**: Load balancers distribute traffic across multiple servers, allowing horizontal scaling.
+3. **Reliability**: Clustering ensures no single point of failure (e.g., the load balancer or application server).
+4. **Performance**: Specialized servers optimize resource usage (e.g., web servers handle static files, application servers focus on business logic).
