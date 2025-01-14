@@ -1,25 +1,24 @@
-flowchart LR
-    User([User]) 
-    DNS[DNS Server\nwww.foobar.com -> 8.8.8.8]
-    
-    subgraph Server["Single Server (IP: 8.8.8.8)"]
-        direction TB
-        Nginx[Web Server\nNginx]
-        App[Application Server]
-        Code[Application Files\nCode Base]
-        MySQL[(Database\nMySQL)]
-    end
-    
-    User -->|1. HTTP Request| DNS
-    DNS -->|2. Resolves to IP| User
-    User -->|3. HTTP Request| Nginx
-    Nginx -->|4. Forward Request| App
-    App -->|5. Read/Write| Code
-    App -->|6. Query| MySQL
-    MySQL -->|7. Return Data| App
-    App -->|8. Response| Nginx
-    Nginx -->|9. HTTP Response| User
 
-    style Server fill:#f5f5f5,stroke:#333,stroke-width:2px
-    style User fill:#ddf,stroke:#333,stroke-width:2px
-    style DNS fill:#ddf,stroke:#333,stroke-width:2px
+
+
+This diagram illustrates the complete flow of a user request to the website. Here's an explanation of the different components:
+
+Server: A physical or virtual machine that hosts all the components necessary for the website to function. In this case, it has the IP 8.8.8.8.
+
+Domain Name: foobar.com is the domain name that allows users to access the website in a user-friendly way, without having to memorize the IP address.
+
+DNS www Record: It's either a CNAME or A record that points www.foobar.com to the server's IP (8.8.8.8).
+
+Web Server (Nginx): Handles incoming HTTP requests, serves static files, and acts as a reverse proxy to the application server.
+
+Application Server: Executes the application code and processes business logic.
+
+Database (MySQL): Stores all dynamic data for the website.
+
+Communication: Uses HTTP/HTTPS protocol between the user's browser and the server.
+
+The main issues with this architecture are:
+
+SPOF (Single Point of Failure): If the server goes down, the entire site becomes inaccessible.
+Maintenance Downtime: Any maintenance requires service interruption.
+Limited Scalability: A single server can only handle a limited number of simultaneous requests.
