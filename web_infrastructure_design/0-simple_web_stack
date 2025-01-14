@@ -1,0 +1,25 @@
+flowchart LR
+    User([User]) 
+    DNS[DNS Server\nwww.foobar.com -> 8.8.8.8]
+    
+    subgraph Server["Single Server (IP: 8.8.8.8)"]
+        direction TB
+        Nginx[Web Server\nNginx]
+        App[Application Server]
+        Code[Application Files\nCode Base]
+        MySQL[(Database\nMySQL)]
+    end
+    
+    User -->|1. HTTP Request| DNS
+    DNS -->|2. Resolves to IP| User
+    User -->|3. HTTP Request| Nginx
+    Nginx -->|4. Forward Request| App
+    App -->|5. Read/Write| Code
+    App -->|6. Query| MySQL
+    MySQL -->|7. Return Data| App
+    App -->|8. Response| Nginx
+    Nginx -->|9. HTTP Response| User
+
+    style Server fill:#f5f5f5,stroke:#333,stroke-width:2px
+    style User fill:#ddf,stroke:#333,stroke-width:2px
+    style DNS fill:#ddf,stroke:#333,stroke-width:2px
